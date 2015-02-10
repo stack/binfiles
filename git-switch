@@ -1,0 +1,16 @@
+#!/bin/bash
+
+case "$1" in
+'home')
+git config --global user.name "Stephen H. Gerstacker"
+git config --global user.email stephen@gerstacker.us
+;;
+*)
+git config --global user.name "Stephen H. Gerstacker"
+git config --global user.email stephen@airsquirrels.com
+;;
+esac
+
+git config --global user.name
+git config --global user.email
+
