@@ -4,7 +4,7 @@
 REPOSITORY_PATH=/tmp/vim.git
 
 # Ensure all dependencies exist
-sudo apt-get build-dep vim -y
+sudo apt-get build-dep vim-gnome -y
 
 # Clean up any existing downloads
 if [ -d ${REPOSITORY_PATH} ]; then
@@ -41,14 +41,13 @@ fi
 ./configure --prefix=/usr/local \
     --with-features=huge        \
     --enable-multibyte          \
-    --enable-gui=no             \
+    --enable-gui=gtk3           \
     --enable-luainterp          \
     --enable-perlinterp         \
     --enable-pythoninterp       \
     --enable-python3interp      \
     --enable-tclinterp          \
-    --enable-rubyinterp         \
-    --without-x
+    --enable-rubyinterp
 
 if [ $? -ne 0 ]; then
     echo "Failed to configure the build"
