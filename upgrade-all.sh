@@ -9,20 +9,20 @@ function announce {
     echo
 }
 
-function exists {
+function command_exists {
     command -v $1 >/dev/null 2>&1
     return $?
 }
 
 # Linux-specific
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    if [[ $(exists apt) -eq 0 ]]; then
+    if command_exists apt; then
         announce "🔮 Upgrading Apt"
 
         sudo apt update
         sudo apt upgrade
         sudo apt autoremove
-    elif [[ $(exists apt-get) -eq 0 ]]; then
+    elif command_exists apt-get; then
         announce "🔮 Upgrading Apt Get"
 
         sudo apt-get update
@@ -32,7 +32,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 fi
 
 # Homebrew (macOS)
-if [[ $(exists brew) -eq 0 ]]; then
+if command_exists brew; then
     announce "🍺 Upgrading Homebrew"
 
     brew update
@@ -42,7 +42,7 @@ if [[ $(exists brew) -eq 0 ]]; then
 fi
 
 # Ruby Gems
-if [[ $(exists gem) -eq 0 ]]; then
+if command_exists gem; then
     announce "💎 Upgrading Ruby Gems"
 
     gem update --system
@@ -50,7 +50,7 @@ if [[ $(exists gem) -eq 0 ]]; then
 fi
 
 # Rust
-if [[ $(exists rustup) -eq 0 ]]; then
+if command_exists rustup; then
     announce "🔨 Upgrading Rust"
 
     rustup self update
