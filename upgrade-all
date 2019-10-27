@@ -14,6 +14,13 @@ function command_exists {
     return $?
 }
 
+# Software Update (macOS)
+if command_exists softwareupdate; then
+    announce "🍎 Upgrading macOS"
+
+    sudo softwareupdate -i -a
+fi
+
 # Linux-specific
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     if command_exists apt; then
