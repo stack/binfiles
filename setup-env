@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# macOS-specific
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # Make date formats in the right order
+    defaults write com.apple.dt.xcode AppleICUDateFormatStrings '{ 1 = "yyyy-MM-dd"; }'
+fi
