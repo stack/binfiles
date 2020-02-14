@@ -1,7 +1,23 @@
 #!/bin/bash
 
+function announce {
+    bold=$(tput bold)
+    normal=$(tput sgr0)
+
+    echo
+    echo "${bold}${1}${normal}"
+    echo
+}
+
+# Global git ignore
+if [[ -f "${HOME}/.gitignore" ]]; then
+    announce "Setting global gitignore at ${HOME}/.gitignore"
+    git config --global core.excludesfile "${HOME}/.gitignore"
+fi
+
 # macOS-specific
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # Make date formats in the right order
+    announce "Setting proper date format for XCode"
     defaults write com.apple.dt.xcode AppleICUDateFormatStrings '{ 1 = "yyyy-MM-dd"; }'
 fi
