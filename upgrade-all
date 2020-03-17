@@ -35,6 +35,9 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
         sudo apt-get update
         sudo apt-get upgrade
         sudo apt-get autoremove
+    elif command_exists pacman; then
+        announce "⚫️ Upgrading Pacman"
+        sudo pacman -Syu
     fi
 fi
 
