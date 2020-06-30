@@ -79,7 +79,8 @@ class Controller
   end
 end
 
-controller = Controller.new '192.168.1.11'
+ip_address = ARGV[0] || '127.0.0.1'
+controller = Controller.new ip_address
 
 response = controller.get_torrents
 puts response.inspect
