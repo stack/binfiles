@@ -15,6 +15,10 @@ if [[ -f "${HOME}/.gitignore" ]]; then
     git config --global core.excludesfile "${HOME}/.gitignore"
 fi
 
+# Default git branch
+announce "Setting default git branch to \"main\""
+git config --global init.defaultBranch main
+
 # macOS-specific
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # Make date formats in the right order
