@@ -1,0 +1,37 @@
+#!/bin/bash
+
+GLOBAL_FLAG=
+CONFIGURATION=work
+
+for argval in "$@"
+do
+    case "$argval" in
+        'global')
+            echo Setting config globally
+            GLOBAL_FLAG=--global
+            ;;
+        'home')
+            CONFIGURATION=home
+            ;;
+        'work')
+            CONFIGURATION=work
+            ;;
+    esac
+done
+
+case "$CONFIGURATION" in
+    'home')
+        echo Configuring for home
+        git config $GLOBAL_FLAG user.name "Stephen H. Gerstacker"
+        git config $GLOBAL_FLAG user.email stephen@gerstacker.us
+        ;;
+    *)
+        echo Configuring for work
+        git config $GLOBAL_FLAG user.name "Stephen H. Gerstacker"
+        git config $GLOBAL_FLAG user.email stephen@airsquirrels.com
+        ;;
+esac
+
+git config --global user.name
+git config --global user.email
+
