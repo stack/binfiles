@@ -4,7 +4,7 @@
 REPOSITORY_PATH=/tmp/vim.git
 
 # Ensure all dependencies exist
-sudo apt-get build-dep vim-gnome -y
+sudo apt-get build-dep vim-gtk3 -y
 
 # Clean up any existing downloads
 if [ -d ${REPOSITORY_PATH} ]; then

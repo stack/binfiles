@@ -39,6 +39,11 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
         announce "⚫️ Upgrading Pacman"
         sudo pacman -Syu
     fi
+
+    if command_exists snap; then
+        announce "👆️ Upgrading Snap"
+        sudo snap refresh
+    fi
 fi
 
 # Homebrew (macOS)
