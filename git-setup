@@ -32,6 +32,6 @@ case "$CONFIGURATION" in
         ;;
 esac
 
-git config --global user.name
-git config --global user.email
+git config $GLOBAL_FLAG user.name
+git config $GLOBAL_FLAG user.email
 
