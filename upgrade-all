@@ -22,7 +22,7 @@ if command_exists softwareupdate; then
 fi
 
 # Linux-specific
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
+if [[ "$OSTYPE" == *"linux-gnu"* ]]; then
     if command_exists apt; then
         announce "🔮 Upgrading Apt"
 
