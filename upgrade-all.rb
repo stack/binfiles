@@ -188,6 +188,38 @@ class HomebrewUpdate < Update
   end
 end
 
+class MacAppStoreUpdate < Update
+
+  def self.can_run?
+    return false unless OS.mac?
+    return false if which('mas').nil?
+
+    true
+  end
+
+  def description
+    'Mac App Store updates'
+  end
+
+  def icon
+    '📱'
+  end
+
+  def run
+    unless execute('mas outdated')
+      puts_failure 'Failed to update Mac App Store'
+      return false
+    end
+
+    unless execute('mas upgrade')
+      puts_failure 'Failed to upgrade Mac App Store'
+      return false
+    end
+
+    true
+  end
+end
+
 class MacOSUpdate < Update
 
   def self.can_run?
@@ -406,7 +438,7 @@ class XcodeUpdate < Update
 end
 
 updates = [
-  'MacOS', 'Xcode', 'Homebrew', 'Apt', 'Snap', 'RubyGems', 'Rust'
+  'MacOS', 'Xcode', 'MacAppStore', 'Homebrew', 'Apt', 'Snap', 'RubyGems', 'Rust'
 ]
 
 updates.each do |update|
