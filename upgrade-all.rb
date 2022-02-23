@@ -278,6 +278,99 @@ class RubyGemsUpdate < Update
   end
 end
 
+class RubyUpdate < Update
+
+  def self.can_run?
+    true
+  end
+
+  def description
+    'Ruby updates'
+  end
+
+  def icon
+    '♦️ '
+  end
+
+  def run
+    uri = URI.parse 'https://www.ruby-lang.org/en/downloads/releases/'
+    response = Net::HTTP.get_response uri
+
+    if response.code != '200'
+      puts_failure 'Failed to get Ruby versions'
+      return false
+    end
+
+    in_releases = false
+
+    releases = []
+    current = {}
+
+    ruby_regex = /Ruby (\d+\.\d+\.\d+)-?([^<]+)?/.freeze
+    date_regex = />([^<]+)/.freeze
+    link_regex = /href="([^"]+)"/.freeze
+
+    response.body.each_line do |line|
+      if in_releases
+        if line.include?('</table>')
+          in_releases = false
+          break
+        elsif line.include?('<tr')
+          current = {}
+        elsif line.include?('</tr>')
+          next if current.empty?
+
+          releases << current
+          current = {}
+        elsif current[:version].nil?
+          current ||= {}
+
+          line.match(ruby_regex) do |m|
+            current[:version] = m[1]
+            current[:version_extra] = m[2]
+          end
+        elsif current[:date].nil?
+          line.match(date_regex) do |m|
+            current[:date] = Date.parse(m[1])
+          end
+        elsif current[:link].nil?
+          line.match(link_regex) do |m|
+            current[:link] = "https://www.ruby-lang.org" + m[1]
+          end
+        end
+      else
+        if line.include?('<table') && line.include?('release-list')
+          in_releases = true
+        end
+      end
+    end
+
+    full_releases = releases
+      .select { |x| x[:version_extra].nil? || (!x[:version_extra].include?('preview') && !x[:version_extra].include?('rc')) }
+      .sort_by { |x| x[:version] }
+      .reverse
+
+    latest_release = full_releases.first
+
+    if latest_release.nil?
+      puts_failure 'Failed to parse Ruby versions'
+      return false
+    end
+
+    if latest_release[:version] != RUBY_VERSION
+      puts_warning 'Ruby is not up to date!'
+
+      unless latest_release[:link].nil?
+        puts "🔗 News: #{latest_release[:link]}"
+      end
+    else
+      puts_success 'Ruby is up to date'
+    end
+
+    true
+  end
+end
+
 class RustUpdate < Update
 
   def self.can_run?
@@ -438,7 +531,7 @@ class XcodeUpdate < Update
 end
 
 updates = [
-  'MacOS', 'Xcode', 'MacAppStore', 'Homebrew', 'Apt', 'Snap', 'RubyGems', 'Rust'
+  'MacOS', 'Xcode', 'MacAppStore', 'Homebrew', 'Apt', 'Snap', 'Ruby', 'RubyGems', 'Rust'
 ]
 
 updates.each do |update|
