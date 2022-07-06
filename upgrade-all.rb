@@ -297,7 +297,7 @@ class RubyUpdate < Update
     response = Net::HTTP.get_response uri
 
     if response.code != '200'
-      puts_failure 'Failed to get Ruby versions'
+      puts_failure "Failed to get Ruby versions: #{response.code}"
       return false
     end
 

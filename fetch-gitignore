@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if [ -z $1 ]; then
+    echo "The gitignore file name is required"
+    exit 1
+fi
+
+curl https://raw.githubusercontent.com/github/gitignore/main/${1}.gitignore -o .gitignore -s -f
+
+if [ $? == 0 ]; then
+    echo "Git ignore for ${1} saved to .gitignore"
+else
+    echo "Failed to fetch gitignore for ${1}"
+fi
