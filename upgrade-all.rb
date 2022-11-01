@@ -530,8 +530,45 @@ class XcodeUpdate < Update
   end
 end
 
+class ZypperUpdate < Update
+
+  def self.can_run?
+    return false unless OS.linux?
+
+    zypper_command = which('zypper')
+    return false if zypper_command.nil?
+
+    true
+  end
+
+  def description
+    'Zypper updates'
+  end
+
+  def icon
+    '🦎️'
+  end
+
+  def run
+    zypper_command = which('zypper')
+
+    unless execute("sudo #{zypper_command} refresh")
+      puts_failure 'Failed to refresh zypper'
+      return false
+    end
+
+    unless execute("sudo #{zypper_command} up")
+      puts_failure 'Failed to update zypper'
+      return false
+    end
+
+    true
+  end
+end
+
+
 updates = [
-  'MacOS', 'Xcode', 'MacAppStore', 'Homebrew', 'Apt', 'Snap', 'Ruby', 'RubyGems', 'Rust'
+  'MacOS', 'Xcode', 'MacAppStore', 'Homebrew', 'Apt', 'Zypper', 'Snap', 'Ruby', 'RubyGems', 'Rust'
 ]
 
 updates.each do |update|
